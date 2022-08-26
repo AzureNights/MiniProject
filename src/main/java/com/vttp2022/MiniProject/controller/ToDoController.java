@@ -1,14 +1,32 @@
 package com.vttp2022.MiniProject.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping ("/ToDoList")
 public class ToDoController {
+    private static final Logger logger = LoggerFactory.getLogger(ToDoController.class);
 
-    @RequestMapping ("/")
-    //Check
-    return index
+    @Autowired
+    private ToDoService todoService;
+
+    //@GetMapping
+    //public String
+
+
+
+
+
+
+  
+
+     
 
     
 }
+ 
