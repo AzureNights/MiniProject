@@ -1,16 +1,21 @@
 package com.vttp2022.MiniProject.repository;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import com.vttp2022.MiniProject.model.ToDoList;
 
 @Configuration
 public class RedisConfig {
@@ -20,7 +25,7 @@ public class RedisConfig {
     private String redisHost;
 
     @Value("${spring.redis.port}")
-    private Integer redisPort;
+    private Optional<Integer> redisPort;
     //why optional 
     //prev Optional<Integer>
 
@@ -30,16 +35,17 @@ public class RedisConfig {
     @Value("${spring.redis.database}")
     private Integer redisDatabase;
 
-    @Bean(name = "games")
+    @Bean
     @Scope("singleton")
-    public RedisTemplate<String, String> redisTemplate() {
+    //why singleton 
+    public RedisTemplate<String, ToDoList> redisTemplate() {
         final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
         config.setHostName(redisHost);
         config.setPort(redisPort);
         config.setDatabase(redisDatabase);
         config.setPassword(redisPassword);
 
-        Jackson2JsonRedisSerializer jackson2JsonJsonSerializer = new Jackson2JsonRedisSerializer(Mastermind.class);
+        Jackson2JsonRedisSerializer jackson2JsonJsonSerializer = new Jackson2JsonRedisSerializer(ToDoList.class);
         //name the class - from midel ??? 
 
         final JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().build();
@@ -47,8 +53,10 @@ public class RedisConfig {
         //why final - comparing with chuks code 
         
         jedisFac.afterPropertiesSet();
+        
         logger.info("redis host port > {redisHost} {redisPort}", redisHost, redisPort);
-        RedisTemplate<String, Mastermind> template = new RedisTemplate<String, Mastermind>();
+        
+        RedisTemplate<String, ToDoList> template = new RedisTemplate<String, ToDoList>();
         template.setConnectionFactory(jedisFac);
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(jackson2JsonJsonSerializer);
@@ -56,6 +64,8 @@ public class RedisConfig {
         template.setHashValueSerializer(template.getValueSerializer());
         return template;
 
+        //
+        
     }
 
     // need to place redis config info 

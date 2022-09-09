@@ -1,6 +1,7 @@
 package com.vttp2022.MiniProject.service;
 
 import java.net.URL;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ public class ToDoService {
 
     //messaging API or Google sheets API  
      
-    private static String URL = "https://api.telegram.org/bot{token}"
+    private static String URL = "https://api.telegram.org/bot{token}";
     //put token in url or not 
 
     public Optional<what> getMessage (String message){
@@ -30,6 +31,8 @@ public class ToDoService {
     }
 
     //logger.info("") WHAT TO INCLUDE 
+    //message --> user input message ?? or sth else 
+    
 
     
 }
